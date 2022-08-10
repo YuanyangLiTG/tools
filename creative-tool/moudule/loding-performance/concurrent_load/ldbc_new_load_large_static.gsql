@@ -1,0 +1,31 @@
+USE GRAPH ldbc_snb
+drop job load_static_with_header
+set sys.data_root="DATA_PATH/social_network-csv_composite-sf1/static/"
+CREATE LOADING JOB load_static_with_header FOR GRAPH ldbc_snb {
+
+  LOAD "any:$sys.data_root/organisation_0_0.csv"
+    TO VERTEX Company VALUES ($0, $2, $3) WHERE $1=="Company" OR $1=="company",
+    TO VERTEX University VALUES ($0, $2, $3) WHERE $1=="University" OR $1=="university" USING header="true", separator="|";
+  LOAD "any:$sys.data_root/place_0_0.csv"
+    TO VERTEX City VALUES ($0, $1, $2) WHERE $3=="City" OR $3=="city",
+    TO VERTEX Country VALUES ($0, $1, $2) WHERE $3=="Country" OR $3=="country",
+    TO VERTEX Continent VALUES ($0, $1, $2) WHERE $3=="Continent" OR $3=="continent" USING header="true", separator="|";
+  LOAD "any:$sys.data_root/tag_0_0.csv"
+    TO VERTEX Tag VALUES ($0, $1, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/tagclass_0_0.csv"
+    TO VERTEX TagClass VALUES ($0, $1, $2) USING header="true", separator="|";
+
+  // load static edge
+  LOAD "any:$sys.data_root/tag_hasType_tagclass_0_0.csv"
+    TO EDGE HAS_TYPE VALUES ($0, $1) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/organisation_isLocatedIn_place_0_0.csv"
+    TO EDGE IS_LOCATED_IN VALUES ($0 Company, $1 Country) WHERE to_int($1) < 111, 
+    TO EDGE IS_LOCATED_IN VALUES ($0 University, $1 City) WHERE to_int($1) > 110 USING header="true", separator="|";
+  LOAD "any:$sys.data_root/place_isPartOf_place_0_0.csv"
+    TO EDGE IS_PART_OF VALUES ($0 Country, $1 Continent) WHERE to_int($0) < 111,
+    TO EDGE IS_PART_OF VALUES ($0 City, $1 Country) WHERE to_int($0) > 110 USING header="true", separator="|";
+  LOAD "any:$sys.data_root/tagclass_isSubclassOf_tagclass_0_0.csv"
+    TO EDGE IS_SUBCLASS_OF VALUES ($0, $1) USING header="true", separator="|";
+}
+
+RUN LOADING JOB load_static_with_header

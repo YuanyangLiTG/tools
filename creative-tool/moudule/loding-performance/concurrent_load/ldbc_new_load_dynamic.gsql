@@ -1,0 +1,58 @@
+USE GRAPH ldbc_snb
+drop job load_dynamic_with_header
+set sys.data_root="DATA_PATH/sf1/csv/bi/composite-projected-fk/initial_snapshot/dynamic/"
+CREATE LOADING JOB load_dynamic_with_header FOR GRAPH ldbc_snb {
+
+
+  // load dynamic vertex
+  LOAD "any:$sys.data_root/Comment" 
+    TO VERTEX Comment VALUES ($1, $0, $2, $3, $4, $5) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Post"
+    TO VERTEX Post VALUES ($1, $2, $0, $3, $4, $5, $6, $7) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Forum"
+    TO VERTEX Forum VALUES ($1, $2, $0) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person"
+    TO VERTEX Person VALUES ($1, $2, $3, $4, $5, $0, $6, $7, SPLIT($8,";"), SPLIT($9,";")) USING header="true", separator="|";
+
+  // load dynamic edge
+  LOAD "any:$sys.data_root/Forum_containerOf_Post"
+    TO EDGE CONTAINER_OF VALUES ($1, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Comment_hasCreator_Person"
+    TO EDGE HAS_CREATOR VALUES ($1 Comment, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Post_hasCreator_Person"
+    TO EDGE HAS_CREATOR VALUES ($1 Post, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_hasInterest_Tag"
+    TO EDGE HAS_INTEREST VALUES ($1, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Forum_hasMember_Person"
+    TO EDGE HAS_MEMBER VALUES ($1, $2, $0) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Forum_hasModerator_Person"
+    TO EDGE HAS_MODERATOR VALUES ($1, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Comment_hasTag_Tag"
+    TO EDGE HAS_TAG VALUES ($1 Comment, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Post_hasTag_Tag"
+    TO EDGE HAS_TAG VALUES ($1 Post, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Forum_hasTag_Tag"
+    TO EDGE HAS_TAG VALUES ($1 Forum, $2) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Comment_isLocatedIn_Country"
+    TO EDGE MESG_LOCATED_IN VALUES ($1 Comment, $2 Country) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Post_isLocatedIn_Country"
+    TO EDGE MESG_LOCATED_IN VALUES ($1 Post, $2 Country) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_isLocatedIn_City"
+    TO EDGE IS_LOCATED_IN VALUES ($1 Person, $2 City) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_knows_Person"
+    TO EDGE KNOWS VALUES ($1, $2, $0) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_likes_Comment"
+    TO EDGE LIKES VALUES ($1, $2 Comment, $0) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_likes_Post"
+    TO EDGE LIKES VALUES ($1, $2 Post, $0) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Comment_replyOf_Comment"
+    TO EDGE REPLY_OF VALUES ($1, $2 Comment) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Comment_replyOf_Post"
+    TO EDGE REPLY_OF VALUES ($1, $2 Post) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_studyAt_University"
+    TO EDGE STUDY_AT VALUES ($1, $2, $3) USING header="true", separator="|";
+  LOAD "any:$sys.data_root/Person_workAt_Company"
+    TO EDGE WORK_AT VALUES ($1, $2, $3) USING header="true", separator="|";
+}
+
+RUN LOADING JOB load_dynamic_with_header

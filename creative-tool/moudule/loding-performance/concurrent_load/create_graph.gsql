@@ -1,0 +1,24 @@
+create vertex lineitem (primary_id l_lineitemkey string , id string , l_quantity double , l_extendedprice double , l_discount double , l_tax double , l_returnflag string , l_linestatus string , l_shipdate datetime, l_commitdate datetime, l_receiptdate datetime, l_shipinstruct string , l_shipmode string , l_comment string )
+
+create vertex part (primary_id p_partkey string , id string , p_name string , p_mfgr string , p_brand string , p_type string , p_size uint , p_container string , p_retailprice double , p_comment string )
+
+create vertex supplier (primary_id s_suppkey string , id string , s_name string , s_address string , s_phone string , s_acctbal double , s_comment string )
+
+create vertex orders (primary_id o_orderkey string , id string , o_orderstatus string , o_totalprice double , o_orderdate datetime , o_orderpriority string , o_clerk string , o_shippriority uint , o_comment string )
+
+create vertex customer (primary_id c_custkey string , id string , c_name string , c_address string , c_phone string , c_acctbal double , c_mktsegment string , c_comment string )
+
+create vertex nation (primary_id n_nationkey string , id string , n_name string , n_comment string)
+
+create vertex region (primary_id r_regionkey string , id string , r_name string , r_comment string)
+
+create undirected edge li_part (from lineitem, to part)
+create undirected edge li_supp (from lineitem, to supplier)
+create undirected edge part_supp (from part, to supplier, ps_availqty uint , ps_supplycost double , ps_comment string )
+create undirected edge order_li (from orders, to lineitem)
+create undirected edge supp_nation (from supplier, to nation)
+create undirected edge order_cust (from orders, to customer)
+create undirected edge cust_nation (from customer, to nation)
+create undirected edge nation_region (from nation, to region)
+
+create graph tpc_graph(lineitem,part,supplier,orders,customer,nation,region,li_part,li_supp,part_supp,order_li,supp_nation,order_cust,cust_nation,nation_region)

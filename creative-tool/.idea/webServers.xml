@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ecfe53df-49ed-4f37-8e6b-274d00812047" name="192.168.99.229">
+        <fileTransfer rootFolder="/tmp/tmp_test" accessType="SFTP" host="192.168.99.229" port="22" sshConfigId="3d7c5826-7fc8-4e69-baf1-c08a1e4cfcee" sshConfig="graphsql@192.168.99.229:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

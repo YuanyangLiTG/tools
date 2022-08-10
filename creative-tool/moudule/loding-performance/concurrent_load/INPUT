@@ -1,0 +1,14 @@
+#!/bin/bash
+# this is input parameter of concurrent load
+SKIP=false
+SKIP_CREATE_DATA=false
+SKIP_SPLIT_DATA=false
+DATA_SOURCE=
+DATA_SIZE=10
+DATA_SET=ldbc_new
+DATA_PATH=~/load_data
+TRANSACTION_ENABLE=false
+NODES=
+TIMEOUT=3600
+LDBC_FILE_SIZE=small
+TEST_TYPE=vertex
