@@ -57,7 +57,7 @@ load_data_op(){
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/load_data;bash main_script.sh
   cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/load_data_${file_size}_vertex.rst
-  echo '' > ${cwd}/load_data/RESULT
+  echo "--------------$1-vertex-------------" >> ${cwd}/load_data/RESULT
 
   # test edge
   sed -i -e "s|DATA_PATH=.*|DATA_PATH=/home/tigergraph/load_data|g" ${cwd}/load_data/INPUT
@@ -65,7 +65,7 @@ load_data_op(){
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/load_data;bash main_script.sh
   cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/load_data_${file_size}_edge.rst
-  echo '' > ${cwd}/load_data/RESULT
+  echo "--------------$1-edge-------------" >> ${cwd}/load_data/RESULT
 
 }
 
@@ -80,14 +80,14 @@ concurrent_load_op(){
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
   cat ${cwd}/concurrent_load/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_vertex.rst
-  echo '' > ${cwd}/concurrent_load/RESULT
+  echo "--------------$1-vertex-------------" >> ${cwd}/concurrent_load/RESULT
 
   # test edge
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=edge|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
   cat ${cwd}/concurrent_load/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_edge.rst
-  echo '' > ${cwd}/concurrent_load/RESULT
+  echo "--------------$1-edge-------------" >> ${cwd}/concurrent_load/RESULT
 
 }
 
