@@ -76,7 +76,6 @@ concurrent_load_op(){
   sed -i -e "s/LDBC_FILE_SIZE=.*/LDBC_FILE_SIZE=${file_size}/g" ${cwd}/concurrent_load/INPUT
 
   # test vertex
-  sed -i -e "s|DATA_PATH=.*|DATA_PATH=|g" ${cwd}/concurrent_load/INPUT
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=vertex|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
@@ -84,7 +83,6 @@ concurrent_load_op(){
   echo '' > ${cwd}/load_data/RESULT
 
   # test edge
-  sed -i -e "s|DATA_PATH=.*|DATA_PATH=/home/tigergraph/load_data|g" ${cwd}/concurrent_load/INPUT
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=edge|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
@@ -95,21 +93,21 @@ concurrent_load_op(){
 
 
 main(){
-#  echo "start load data ---> small" >> ${RESULT_DIR}/sum.rst
-#  # small
-#  load_data_op small
-#  echo "start load data ---> large" >> ${RESULT_DIR}/sum.rst
-#  # large
-#  load_data_op large
-#  echo "finished load data" >> ${RESULT_DIR}/sum.rst
 
-  echo "start concurrent load ---> small" >> ${RESULT_DIR}/sum.rst
+  echo "start load data ---> small"
+  load_data_op small
+  echo "start load data ---> large"
+  # large
+  load_data_op large
+  echo "finished load data"
+
+  echo "start concurrent load ---> small"
   # small
   concurrent_load_op small
-  echo "start concurrent load ---> large" >> ${RESULT_DIR}/sum.rst
+  echo "start concurrent load ---> large"
   # large
   concurrent_load_op large
-  echo "finished concurrent load" >> ${RESULT_DIR}/sum.rst
+  echo "finished concurrent load"
 }
 
 main
