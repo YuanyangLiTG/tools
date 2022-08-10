@@ -79,15 +79,15 @@ concurrent_load_op(){
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=vertex|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
-  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_vertex.rst
-  echo '' > ${cwd}/load_data/RESULT
+  cat ${cwd}/concurrent_load/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_vertex.rst
+  echo '' > ${cwd}/concurrent_load/RESULT
 
   # test edge
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=edge|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
-  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_edge.rst
-  echo '' > ${cwd}/load_data/RESULT
+  cat ${cwd}/concurrent_load/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_edge.rst
+  echo '' > ${cwd}/concurrent_load/RESULT
 
 }
 
