@@ -1,27 +1,20 @@
 USE GRAPH ldbc_snb
 drop job load_dynamic_with_header
+set sys.data_root="DATA_PATH/sf1/csv/bi/composite-projected-fk/initial_snapshot/dynamic/"
 CREATE LOADING JOB load_dynamic_with_header FOR GRAPH ldbc_snb {
-  //dynamic vertex and edge
-  DEFINE FILENAME file_Comment;
-  DEFINE FILENAME file_Forum;
-  DEFINE FILENAME file_Person;
-  DEFINE FILENAME file_Post;
 
 
   // load dynamic vertex
-  LOAD file_Comment 
+  LOAD "any:$sys.data_root/Comment"
     TO VERTEX Comment VALUES ($1, $0, $2, $3, $4, $5) USING header="true", separator="|";
-  LOAD file_Post
+  LOAD "any:$sys.data_root/Post"
     TO VERTEX Post VALUES ($1, $2, $0, $3, $4, $5, $6, $7) USING header="true", separator="|";
-  LOAD file_Forum
+  LOAD "any:$sys.data_root/Forum"
     TO VERTEX Forum VALUES ($1, $2, $0) USING header="true", separator="|";
-  LOAD file_Person
+  LOAD "any:$sys.data_root/Person"
     TO VERTEX Person VALUES ($1, $2, $3, $4, $5, $0, $6, $7, SPLIT($8,";"), SPLIT($9,";")) USING header="true", separator="|";
+
 
 }
 
-RUN LOADING JOB load_dynamic_with_header USING
-file_Comment="DATA_PATH/dynamic/Comment",
-file_Forum="DATA_PATH/dynamic/Forum",
-file_Person="DATA_PATH/dynamic/Person",
-file_Post="DATA_PATH/dynamic/Post"
+RUN LOADING JOB load_dynamic_with_header

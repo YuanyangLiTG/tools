@@ -56,7 +56,7 @@ load_data_op(){
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=vertex|g" ${cwd}/load_data/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/load_data;bash main_script.sh
-  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/load_data/${file_size}_vertex.rst
+  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/load_data_${file_size}_vertex.rst
   echo '' > ${cwd}/load_data/RESULT
 
   # test edge
@@ -64,7 +64,7 @@ load_data_op(){
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=edge|g" ${cwd}/load_data/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/load_data;bash main_script.sh
-  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/load_data/${file_size}_edge.rst
+  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/load_data_${file_size}_edge.rst
   echo '' > ${cwd}/load_data/RESULT
 
 }
@@ -80,7 +80,7 @@ concurrent_load_op(){
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=vertex|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
-  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/concurrent_load/${file_size}_vertex.rst
+  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_vertex.rst
   echo '' > ${cwd}/load_data/RESULT
 
   # test edge
@@ -88,26 +88,28 @@ concurrent_load_op(){
   sed -i -e "s|TEST_TYPE=.*|TEST_TYPE=edge|g" ${cwd}/concurrent_load/INPUT
   gsql CLEAR GRAPH STORE -HARD
   cd ${cwd}/concurrent_load;bash main_script.sh
-  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/concurrent_load/${file_size}_edge.rst
+  cat ${cwd}/load_data/RESULT >> ${RESULT_DIR}/concurrent_load_${file_size}_edge.rst
   echo '' > ${cwd}/load_data/RESULT
 
 }
 
 
 main(){
-  echo "start load data ---> small" >> ${RESULT_DIR}/sum.rst
-  # small
-  load_data_op small
-  echo "start load data ---> large" >> ${RESULT_DIR}/sum.rst
-  # large
-  load_data_op large
-  echo "finished load data" >> ${RESULT_DIR}/sum.rst
-
-#  echo "start concurrent load ---> small" >> ${RESULT_DIR}/sum.rst
+#  echo "start load data ---> small" >> ${RESULT_DIR}/sum.rst
 #  # small
-#  concurrent_load_op small
-#  echo "start concurrent load ---> large" >> ${RESULT_DIR}/sum.rst
+#  load_data_op small
+#  echo "start load data ---> large" >> ${RESULT_DIR}/sum.rst
 #  # large
-#  concurrent_load_op large
-#  echo "finished concurrent load" >> ${RESULT_DIR}/sum.rst
+#  load_data_op large
+#  echo "finished load data" >> ${RESULT_DIR}/sum.rst
+
+  echo "start concurrent load ---> small" >> ${RESULT_DIR}/sum.rst
+  # small
+  concurrent_load_op small
+  echo "start concurrent load ---> large" >> ${RESULT_DIR}/sum.rst
+  # large
+  concurrent_load_op large
+  echo "finished concurrent load" >> ${RESULT_DIR}/sum.rst
 }
+
+main

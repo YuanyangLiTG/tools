@@ -1,95 +1,48 @@
-use graph ldbc_snb
+USE GRAPH ldbc_snb
 drop job load_dynamic_with_header
+set sys.data_root="DATA_PATH/social_network-csv_composite-sf1/dynamic/"
 CREATE LOADING JOB load_dynamic_with_header FOR GRAPH ldbc_snb {
-  //dynamic vertex and edge
-
-  DEFINE FILENAME file_Comment_hasCreator_Person;
-  DEFINE FILENAME file_Comment_hasTag_Tag;
-  DEFINE FILENAME file_Comment_isLocatedIn_Country;
-  DEFINE FILENAME file_Comment_replyOf_Comment;
-  DEFINE FILENAME file_Comment_replyOf_Post;
-
-  DEFINE FILENAME file_Forum_containerOf_Post;
-  DEFINE FILENAME file_Forum_hasMember_Person;
-  DEFINE FILENAME file_Forum_hasModerator_Person;
-  DEFINE FILENAME file_Forum_hasTag_Tag;
-
-  DEFINE FILENAME file_Person_hasInterest_Tag;
-  DEFINE FILENAME file_Person_isLocatedIn_City;
-  DEFINE FILENAME file_Person_knows_Person;
-  DEFINE FILENAME file_Person_likes_Comment;
-  DEFINE FILENAME file_Person_likes_Post;
-  DEFINE FILENAME file_Person_studyAt_University;
-  DEFINE FILENAME file_Person_workAt_Company;
-
-  DEFINE FILENAME file_Post_hasCreator_Person;
-  DEFINE FILENAME file_Post_hasTag_Tag;
-  DEFINE FILENAME file_Post_isLocatedIn_Country;
-
 
 
   // load dynamic edge
-  LOAD file_Forum_containerOf_Post
+  LOAD "any:$sys.data_root/forum_containerOf_post_0_0.csv"
     TO EDGE CONTAINER_OF VALUES ($0, $1) USING header="true", separator="|";
-  LOAD file_Comment_hasCreator_Person
+  LOAD "any:$sys.data_root/comment_hasCreator_person_0_0.csv"
     TO EDGE HAS_CREATOR VALUES ($0 Comment, $1) USING header="true", separator="|";
-  LOAD file_Post_hasCreator_Person
+  LOAD "any:$sys.data_root/post_hasCreator_person_0_0.csv"
     TO EDGE HAS_CREATOR VALUES ($0 Post, $1) USING header="true", separator="|";
-  LOAD file_Person_hasInterest_Tag
+  LOAD "any:$sys.data_root/person_hasInterest_tag_0_0.csv"
     TO EDGE HAS_INTEREST VALUES ($0, $1) USING header="true", separator="|";
-  LOAD file_Forum_hasMember_Person
+  LOAD "any:$sys.data_root/forum_hasMember_person_0_0.csv"
     TO EDGE HAS_MEMBER VALUES ($0, $1, $2) USING header="true", separator="|";
-  LOAD file_Forum_hasModerator_Person
+  LOAD "any:$sys.data_root/forum_hasModerator_person_0_0.csv"
     TO EDGE HAS_MODERATOR VALUES ($0, $1) USING header="true", separator="|";
-  LOAD file_Comment_hasTag_Tag
+  LOAD "any:$sys.data_root/comment_hasTag_tag_0_0.csv"
     TO EDGE HAS_TAG VALUES ($0 Comment, $1) USING header="true", separator="|";
-  LOAD file_Post_hasTag_Tag
+  LOAD "any:$sys.data_root/post_hasTag_tag_0_0.csv"
     TO EDGE HAS_TAG VALUES ($0 Post, $1) USING header="true", separator="|";
-  LOAD file_Forum_hasTag_Tag
+  LOAD "any:$sys.data_root/forum_hasTag_tag_0_0.csv"
     TO EDGE HAS_TAG VALUES ($0 Forum, $1) USING header="true", separator="|";
-  LOAD file_Comment_isLocatedIn_Country
+  LOAD "any:$sys.data_root/comment_isLocatedIn_place_0_0.csv"
     TO EDGE MESG_LOCATED_IN VALUES ($0 Comment, $1 Country) USING header="true", separator="|";
-  LOAD file_Post_isLocatedIn_Country
+  LOAD "any:$sys.data_root/post_isLocatedIn_place_0_0.csv"
     TO EDGE MESG_LOCATED_IN VALUES ($0 Post, $1 Country) USING header="true", separator="|";
-  LOAD file_Person_isLocatedIn_City
+  LOAD "any:$sys.data_root/person_isLocatedIn_place_0_0.csv"
     TO EDGE IS_LOCATED_IN VALUES ($0 Person, $1 City) USING header="true", separator="|";
-  LOAD file_Person_knows_Person
+  LOAD "any:$sys.data_root/person_knows_person_0_0.csv"
     TO EDGE KNOWS VALUES ($0, $1, $2) USING header="true", separator="|";
-  LOAD file_Person_likes_Comment
+  LOAD "any:$sys.data_root/person_likes_comment_0_0.csv"
     TO EDGE LIKES VALUES ($0, $1 Comment, $2) USING header="true", separator="|";
-  LOAD file_Person_likes_Post
+  LOAD "any:$sys.data_root/person_likes_post_0_0.csv"
     TO EDGE LIKES VALUES ($0, $1 Post, $2) USING header="true", separator="|";
-  LOAD file_Comment_replyOf_Comment
+  LOAD "any:$sys.data_root/comment_replyOf_comment_0_0.csv"
     TO EDGE REPLY_OF VALUES ($0, $1 Comment) USING header="true", separator="|";
-  LOAD file_Comment_replyOf_Post
+  LOAD "any:$sys.data_root/comment_replyOf_post_0_0.csv"
     TO EDGE REPLY_OF VALUES ($0, $1 Post) USING header="true", separator="|";
-  LOAD file_Person_studyAt_University
+  LOAD "any:$sys.data_root/person_studyAt_organisation_0_0.csv"
     TO EDGE STUDY_AT VALUES ($0, $1, $2) USING header="true", separator="|";
-  LOAD file_Person_workAt_Company
+  LOAD "any:$sys.data_root/person_workAt_organisation_0_0.csv"
     TO EDGE WORK_AT VALUES ($0, $1, $2) USING header="true", separator="|";
 }
 
-RUN LOADING JOB load_dynamic_with_header USING
-
-file_Comment_hasCreator_Person="DATA_PATH/dynamic/comment_hasCreator_person_0_0.csv",
-file_Comment_hasTag_Tag="DATA_PATH/dynamic/comment_hasTag_tag_0_0.csv",
-file_Comment_isLocatedIn_Country="DATA_PATH/dynamic/comment_isLocatedIn_place_0_0.csv",
-file_Comment_replyOf_Comment="DATA_PATH/dynamic/comment_replyOf_comment_0_0.csv",
-file_Comment_replyOf_Post="DATA_PATH/dynamic/comment_replyOf_post_0_0.csv",
-
-file_Forum_containerOf_Post="DATA_PATH/dynamic/forum_containerOf_post_0_0.csv",
-file_Forum_hasMember_Person="DATA_PATH/dynamic/forum_hasMember_person_0_0.csv",
-file_Forum_hasModerator_Person="DATA_PATH/dynamic/forum_hasModerator_person_0_0.csv",
-file_Forum_hasTag_Tag="DATA_PATH/dynamic/forum_hasTag_tag_0_0.csv",
-
-file_Person_hasInterest_Tag="DATA_PATH/dynamic/person_hasInterest_tag_0_0.csv",
-file_Person_isLocatedIn_City="DATA_PATH/dynamic/person_isLocatedIn_place_0_0.csv",
-file_Person_knows_Person="DATA_PATH/dynamic/person_knows_person_0_0.csv",
-file_Person_likes_Comment="DATA_PATH/dynamic/person_likes_comment_0_0.csv",
-file_Person_likes_Post="DATA_PATH/dynamic/person_likes_post_0_0.csv",
-file_Person_studyAt_University="DATA_PATH/dynamic/person_studyAt_organisation_0_0.csv",
-file_Person_workAt_Company="DATA_PATH/dynamic/person_workAt_organisation_0_0.csv",
-
-file_Post_hasCreator_Person="DATA_PATH/dynamic/post_hasCreator_person_0_0.csv",
-file_Post_hasTag_Tag="DATA_PATH/dynamic/post_hasTag_tag_0_0.csv",
-file_Post_isLocatedIn_Country="DATA_PATH/dynamic/post_isLocatedIn_place_0_0.csv"
+RUN LOADING JOB load_dynamic_with_header

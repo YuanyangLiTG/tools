@@ -1,34 +1,20 @@
-use graph ldbc_snb
+USE GRAPH ldbc_snb
 drop job load_dynamic_with_header
+set sys.data_root="DATA_PATH/social_network-csv_composite-sf1/dynamic/"
 CREATE LOADING JOB load_dynamic_with_header FOR GRAPH ldbc_snb {
-  //dynamic vertex and edge
-  DEFINE FILENAME file_Comment;
-
-  DEFINE FILENAME file_Forum;
-
-  DEFINE FILENAME file_Person;
-
-  DEFINE FILENAME file_Post;
 
 
   // load dynamic vertex
-  LOAD file_Comment 
+  LOAD "any:$sys.data_root/comment_0_0.csv"
     TO VERTEX Comment VALUES ($0, $1, $2, $3, $4, $5) USING header="true", separator="|";
-  LOAD file_Post
+  LOAD "any:$sys.data_root/post_0_0.csv"
     TO VERTEX Post VALUES ($0, $1, $2, $3, $4, $5, $6, $7) USING header="true", separator="|";
-  LOAD file_Forum
+  LOAD "any:$sys.data_root/forum_0_0.csv"
     TO VERTEX Forum VALUES ($0, $1, $2) USING header="true", separator="|";
-  LOAD file_Person
+  LOAD "any:$sys.data_root/person_0_0.csv"
     TO VERTEX Person VALUES ($0, $1, $2, $3, $4, $5, $6, $7, SPLIT($8,";"), SPLIT($9,";")) USING header="true", separator="|";
 
-  
+
 }
 
-RUN LOADING JOB load_dynamic_with_header USING
-file_Comment="DATA_PATH/dynamic/comment_0_0.csv",
-
-file_Forum="DATA_PATH/dynamic/forum_0_0.csv",
-
-file_Person="DATA_PATH/dynamic/person_0_0.csv",
-
-file_Post="DATA_PATH/dynamic/post_0_0.csv"
+RUN LOADING JOB load_dynamic_with_header
