@@ -73,6 +73,7 @@ else
       DATA_URL=https://storage.googleapis.com/qe-test-data/social_network-csv_composite-sf${DATA_SIZE}.tar.gz
       load_job_0="special_query/${LDBC_FILE_SIZE}_${TEST_TYPE}.gsql"
     fi
+
   fi
 fi
 
