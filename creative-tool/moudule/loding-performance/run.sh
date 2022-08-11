@@ -4,7 +4,7 @@ cwd=$(cd $(dirname $0) && pwd)
 cd $cwd
 RESULT_DIR="/tmp/lp_rst"
 TEST_MODULE_DIR="/tmp/modularized_test/test_modules"
-PREPARE_QUERY_DIR=""
+PREPARE_QUERY_DIR=${cwd}
 mkdir -p ${RESULT_DIR}
 
 load_data_op() {
@@ -97,7 +97,7 @@ tpch_load_operation() {
   cat ${cwd}/${load_type}/RESULT >>${RESULT_DIR}/${load_type}_${file_size}_edge.rst
 }
 
-main() {
+run_ldbc(){
   load_1="load_data"
   load_2="concurrent_load"
   current_ip=`ip a | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v "127.0.0.1" | grep -Ev "([0-9]{1,3}\.){3}255" | head -n 1`
@@ -106,13 +106,33 @@ main() {
   echo "start load data ---> large"
   ldbc_load_operation large ${load_1}
   echo "finished load data"
-  curl -X GET https://api.day.app/snLJigKpYsLuzFBZ4waHcb/${current_ip}/${load_1}_finished
+  curl -X GET https://api.day.app/snLJigKpYsLuzFBZ4waHcb/${current_ip}/ldbc_${load_1}_finished
   echo "start concurrent load ---> small"
   ldbc_load_operation small ${load_2}
   echo "start concurrent load ---> large"
   ldbc_load_operation large ${load_2}
   echo "finished concurrent load"
-  curl -X GET https://api.day.app/snLJigKpYsLuzFBZ4waHcb/${current_ip}/${load_2}_finished
+  curl -X GET https://api.day.app/snLJigKpYsLuzFBZ4waHcb/${current_ip}/ldbc_${load_2}_finished
+}
+
+
+run_tpch(){
+  load_1="load_data"
+  load_2="concurrent_load"
+  current_ip=`ip a | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v "127.0.0.1" | grep -Ev "([0-9]{1,3}\.){3}255" | head -n 1`
+  echo "start load data "
+  tpch_load_operation  ${load_1}
+  echo "finished load data"
+  curl -X GET https://api.day.app/snLJigKpYsLuzFBZ4waHcb/${current_ip}/tpch_${load_1}_finished
+
+  echo "start concurrent load"
+  tpch_load_operation  ${load_2}
+  echo "finished concurrent load"
+  curl -X GET https://api.day.app/snLJigKpYsLuzFBZ4waHcb/${current_ip}/tpch_${load_2}_finished
+}
+
+main() {
+  run_tpch
   #  echo "start load data ---> small"
   #  load_data_op small
   #  echo "start load data ---> large"
