@@ -1,0 +1,6 @@
+#!/bin/bash
+
+TEST_MODULE_DIR="/tmp/modularized_test/test_modules"
+USER_NAME=tigergraph
+DATA_SET=ldbc_new
+CLEAR_EXIST_VERTEX=false

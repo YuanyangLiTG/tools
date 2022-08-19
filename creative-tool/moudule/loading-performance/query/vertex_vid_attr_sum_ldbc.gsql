@@ -1,0 +1,9 @@
+use graph ldbc_snb
+drop query vid_attr_sum_ldbc
+CREATE QUERY vid_attr_sum_ldbc() FOR GRAPH ldbc_snb {
+       SumAccum<INT> @@checkSum;
+       start = {ANY};
+       xx = SELECT v FROM start:v POST-ACCUM @@checkSum += i_hash(v, v.id);
+       PRINT @@checkSum;
+}
+install query vid_attr_sum_ldbc

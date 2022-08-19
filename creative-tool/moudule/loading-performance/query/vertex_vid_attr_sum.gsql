@@ -1,0 +1,9 @@
+use graph tpc_graph
+drop query vid_attr_sum
+CREATE QUERY vid_attr_sum() FOR GRAPH tpc_graph {
+       SumAccum<INT> @@checkSum;
+       start = {ANY};
+       xx = SELECT v FROM start:v POST-ACCUM @@checkSum += x_hash(v, v.id);
+       PRINT @@checkSum;
+}
+install query vid_attr_sum
