@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="http://127.0.0.1:8002/static/js/internal_resources/prepare.js"></script>
+    <script>
+        const js_src_map={
+            "vue":staticResource+"/static/js/external_resources/vue.js",
+            "axios":staticResource+"/static/js/external_resources/axios-0.18.0.js",
+            "element-ui-js":staticResource+"/static/js/external_resources/axios-0.18.0.js",
+        }
+        const css_src_map={
+            "element-ui-css":staticResource+"/static/js/external_resources/element-ui/lib/theme-chalk/index.css",
+        }
+        for (const get_key in js_src_map){
+            document.writeln(`<script  src="${js_src_map[get_key]}"><\/script>`);
+        }
+        for (const get_key in css_src_map){
+            document.writeln(`<link rel="stylesheet" href="${css_src_map[get_key]}">`);
+        }
+    </script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="div">
+    <template>
+
+        <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
+    </template>
+    <el-container>
+        <el-header class="el-header">
+            <el-container>
+                <div>
+                    <!--                    <el-image src="http://172.20.185.205:6363/static/img/main_icon.svg"class="header-img"></el-image>-->
+                    <b style="color: #ffd04b">ServerManager管理面</b>
+                </div>
+            </el-container>
+
+        </el-header>
+
+        <!--        <el-container style="height: 100%; border: 1px solid #eee;background-color:#EBEEF5">-->
+        <el-container style="height: 100%; border: 1px solid #eee;background-color:#E7EAF1">
+            <!--            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">-->
+            <el-menu :default-openeds="['1', '3']" background-color="#545c64"
+                     text-color="#fff"
+                     active-text-color="#ffd04b">
+
+
+                <el-submenu index="1">
+                    <template slot="title"><i class="el-icon-connection"></i>服务端</template>
+                    <el-menu-item index="1-1" @click="findConn">连接信息</el-menu-item>
+                    <el-menu-item index="1-2" @click="findService">已安装服务</el-menu-item>
+                    <el-menu-item index="1-3" @click="findCache">缓存信息</el-menu-item>
+                    <el-menu-item index="1-4" @click="connDjango">服务状态</el-menu-item>
+                    <el-menu-item index="1-5">其他</el-menu-item>
+                </el-submenu>
+
+                <el-submenu index="2">
+                    <template slot="title"><i class="el-icon-monitor"></i>客户端</template>
+                    <el-menu-item index="2-1" @click="findAgent">Agent</el-menu-item>
+                    <el-menu-item index="2-2" @click="findAgentFromDjango">Django现有Agent</el-menu-item>
+                </el-submenu>
+
+                <el-submenu index="3">
+                    <template slot="title"><i class="el-icon-setting"></i>其他</template>
+                    <el-menu-item-group>
+                        <template slot="title">分组一</template>
+                        <el-menu-item index="3-1">选项1</el-menu-item>
+                        <el-menu-item index="3-2">选项2</el-menu-item>
+                    </el-menu-item-group>
+                    <el-menu-item-group title="分组2">
+                        <el-menu-item index="3-3">选项3</el-menu-item>
+                    </el-menu-item-group>
+                    <el-submenu index="3-4">
+                        <template slot="title">选项4</template>
+                        <el-menu-item index="3-4-1">选项4-1</el-menu-item>
+                    </el-submenu>
+                </el-submenu>
+
+                <el-submenu index="4">
+                    <template slot="title"><i class="el-icon-monitor"></i>调试</template>
+                    <el-menu-item index="4-1" @click="connDjango">Server</el-menu-item>
+                    <el-menu-item index="4-2">test2</el-menu-item>
+                </el-submenu>
+
+
+            </el-menu>
+            </el-aside>
+
+
+            <el-main>
+                <iframe :src="iframeSrc" frameborder="false"
+                        style="top:80px;left: 120px; width: 100%;height:750px"></iframe>
+
+            </el-main>
+        </el-container>
+    </el-container>
+
+
+</div>
+
+</body>
+
+<style>
+    .el-header {
+        background-color: #545c64;
+        color: #333;
+        line-height: 60px;
+    }
+
+    .el-aside {
+        color: #333;
+    }
+</style>
+<script>
+    new Vue({
+        el: "#div",
+        data: {
+            iframeSrc: "http://172.20.185.205:6363/manage/hello_show",
+        },
+        mounted: function () {
+            console.log("send init websocket request")
+            this.initWebSocket()
+        },
+        methods: {
+            findConn() {
+                this.iframeSrc = "http://172.20.185.205:6363/manage/conn_show"
+            },
+            findService() {
+                this.iframeSrc = "http://172.20.185.205:6363/manage/service_show"
+            },
+            findCache() {
+                this.iframeSrc = "http://172.20.185.205:6363/manage/cache_show"
+            },
+            connDjango() {
+                this.iframeSrc = "http://172.20.185.205:6363/manage/debug_show"
+            },
+            findAgent() {
+                this.iframeSrc = "http://172.20.185.205:6363/manage/agent_show"
+            },
+            findAgentFromDjango() {
+                this.iframeSrc = "http://172.20.185.205:6363/manage/agent_show_from_django"
+            },
+
+            initWebSocket() { //初始化weosocket
+                const wsuri = "ws://172.20.185.205:6363/ws";
+                this.websock = new WebSocket(wsuri);
+                this.websock.onmessage = this.websocketOnMessage;
+                this.websock.onopen = this.websocketOnOpen;
+                this.websock.onerror = this.websocketOnError;
+                this.websock.onclose = this.websocketClose;
+            },
+            websocketOnOpen() { //连接建立之后执行send方法发送数据
+                let actions = {"type": "browser"};
+                this.websocketSend(JSON.stringify(actions));
+            },
+            websocketOnError() {//连接建立失败重连
+                this.initWebSocket();
+            },
+            websocketOnMessage(e) { //数据接收
+                // const redata = JSON.parse(e.data);
+                console.log("-----")
+                console.log(e.data)
+                this.$message.success(e.data)
+                // console.log(redata)
+            },
+            websocketSend(Data) {//数据发送
+                this.websock.send(Data);
+            },
+            websocketClose(e) {  //关闭
+                console.log('断开连接', e);
+            },
+
+        }
+    });
+</script>
+</html>

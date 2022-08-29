@@ -1,0 +1,45 @@
+I0827 08:30:39.152841 22002 engineservicerequest.hpp:199] Request|dell_gpe_crash::kstep expansion,16842755.RESTPP_1_1.1661589039151.N,NNN,15,0,0,S|HoldQueryState to block rebuild initialization.
+I0827 08:30:39.156258 22030 gtimer.cpp:150] (46.706 ms) Rebuild _56_ RunOneSegment reload done
+I0827 08:30:39.156821 30466 idconverter.cpp:423] Request|dell_gpe_crash::kstep expansion,16842755.RESTPP_1_1.1661589039151.N,NNN,15,0,0,S|UIdtoVId,638.GPE_1_1.1661589039156.N,NNN,0,0,0,S|IdConverter|sendUIdtoVIdRequest2IDS|1
+I0827 08:30:39.157964 30466 gpr.cpp:60] Engine_GPR|Create GPR for {request} and {query} with {load_remote_topology}|request:dell_gpe_crash::kstep expansion,16842755.RESTPP_1_1.1661589039151.N,NNN,15,0,0,S|query:,0..0.N,NNN,0,0,0,S|load_remote_topology:1
+I0827 08:30:39.159039 24236 enginejoblistener.cpp:62] Request|DistributedTopology,381.GPE_2_1.1661589039159.N,NNN,14,0,0,S|Received
+I0827 08:30:39.159149 21926 topologyqueryhandler.cpp:802] Comp_TopologyQueryHandler|QueryThread|HandleQuery|DistributedTopology,381.GPE_2_1.1661589039159.N,NNN,14,0,0,S
+I0827 08:30:39.162405 30466 gtimer.cpp:150] (0.169 ms) ,0..0.N,NNN,0,0,0,S|dell_gpe_crash::kstep expansion,16842755.RESTPP_1_1.1661589039151.N,NNN,15,0,0,S|VertexAction done with 1 vertices, activated 0 vertices
+I0827 08:30:39.163115 30466 enginejobrunner.cpp:421] Request|dell_gpe_crash::kstep expansion,16842755.RESTPP_1_1.1661589039151.N,NNN,15,0,0,S|Finished in 6.615 ms|Response 178 bytes|Id conversion 1|mem watermark(MiB): 0
+W0827 08:30:39.170500 22036 deltarecords.cpp:1376] Wait schema change to fully complete
+E0827 08:30:39.171039 21918 glogging.cpp:134] ============ Call stacktrace. signal(Segmentation fault) ============
+ 0# 0x00007F2DB7C675E5 in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 1# 0x00007F2DB5F9B630 in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libpthread.so.0
+ 2# topology4::DeltaAttributeCombiner::AdvanceOneDeltaAttribute(unsigned char*&, topology4::AttributeMeta&) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 3# topology4::DeltaRecords::HandleEdgeDeltaAttribute(unsigned char*&, unsigned long&, unsigned char*, topology4::AttributesMeta&, std::vector<unsigned int, std::allocator<unsigned int> >*, gutil::GCharBuffer*) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 4# topology4::DeltaRecords::AddOneEdgeDelta_Internal(unsigned long, unsigned long, unsigned int, unsigned int, unsigned char*, unsigned long, unsigned long, unsigned long&, unsigned char*, topology4::AttributesMeta*, std::vector<unsigned int, std::allocator<unsigned int> >*, gutil::GCharBuffer*) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 5# topology4::DeltaRecords::AddEdgeDeltaThread(unsigned int) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 6# 0x00007F2DB8EE6645 in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 7# 0x00007F2DB5F93EA5 in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libpthread.so.0
+ 8# clone in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libc.so.6
+
+============ End of stacktrace ============
+E0827 08:30:39.170971 21922 glogging.cpp:134] ============ Call stacktrace. signal(Segmentation fault) ============
+ 0# 0x00007F2DB7C675E5 in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 1# 0x00007F2DB5F9B630 in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libpthread.so.0
+ 2# topology4::DeltaAttributeCombiner::AdvanceOneDeltaAttribute(unsigned char*&, topology4::AttributeMeta&) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 3# topology4::DeltaRecords::HandleEdgeDeltaAttribute(unsigned char*&, unsigned long&, unsigned char*, topology4::AttributesMeta&, std::vector<unsigned int, std::allocator<unsigned int> >*, gutil::GCharBuffer*) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 4# topology4::DeltaRecords::AddOneEdgeDelta_Internal(unsigned long, unsigned long, unsigned int, unsigned int, unsigned char*, unsigned long, unsigned long, unsigned long&, unsigned char*, topology4::AttributesMeta*, std::vector<unsigned int, std::allocator<unsigned int> >*, gutil::GCharBuffer*) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 5# topology4::DeltaRecords::AddEdgeDeltaThread(unsigned int) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 6# 0x00007F2DB8EE6645 in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 7# 0x00007F2DB5F93EA5 in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libpthread.so.0
+ 8# clone in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libc.so.6
+
+============ End of stacktrace ============
+E0827 08:30:39.171523 21911 glogging.cpp:134] ============ Call stacktrace. signal(Segmentation fault) ============
+ 0# 0x00007F2DB7C675E5 in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 1# 0x00007F2DB5F9B630 in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libpthread.so.0
+ 2# topology4::DeltaAttributeCombiner::AdvanceOneDeltaAttribute(unsigned char*&, topology4::AttributeMeta&) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 3# topology4::DeltaRecords::HandleEdgeDeltaAttribute(unsigned char*&, unsigned long&, unsigned char*, topology4::AttributesMeta&, std::vector<unsigned int, std::allocator<unsigned int> >*, gutil::GCharBuffer*) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 4# topology4::DeltaRecords::AddOneEdgeDelta_Internal(unsigned long, unsigned long, unsigned int, unsigned int, unsigned char*, unsigned long, unsigned long, unsigned long&, unsigned char*, topology4::AttributesMeta*, std::vector<unsigned int, std::allocator<unsigned int> >*, gutil::GCharBuffer*) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 5# topology4::DeltaRecords::AddEdgeDeltaThread(unsigned int) in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 6# 0x00007F2DB8EE6645 in /home/tigergraph/tigergraph/app/3.7.0/bin/libtigergraph.so
+ 7# 0x00007F2DB5F93EA5 in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libpthread.so.0
+ 8# clone in /home/tigergraph/tigergraph/app/3.7.0/.syspre/usr/lib_ld1/libc.so.6
+
+============ End of stacktrace ============
